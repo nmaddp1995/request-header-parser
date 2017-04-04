@@ -1,12 +1,14 @@
 var express = require("express");
 var app = express();
 var port = process.env.PORT || 8080;
-
-
+var useragent = require("express-useragent");
+app.use(useragent.express());
 
 app.get('/',function(req,res){
 	var browserInfo = req.headers['user-agent'];
-	var browser = req.headers['user-agent'].split("(")[1].split(")")[0];
+	
+	var os = req.useragent.os;
+	var browser = req.useragent.browser;
 	var ip = req.headers['x-forwarded-for'] || 
      req.connection.remoteAddress || 
      req.socket.remoteAddress ||
@@ -17,6 +19,7 @@ app.get('/',function(req,res){
 	var info = {
 		"ip" : ip,
 		"language" : language,
+		"os" : os ,
 		"browser" : browser
 	};
 	
